@@ -11,6 +11,9 @@ include_directories(
 )
 
 add_library(elma STATIC
+    src/Basic/Forward.h
+    src/Basic/Location.cpp
+    src/Basic/Location.h
     src/Driver/Driver.cpp
     src/Driver/Driver.h
 )
