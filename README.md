@@ -27,6 +27,7 @@ Optional:
 
 - Bison 3.0.4
 - Flex 2.6.4
+- ClangFormat 6.0.0 or later
 
 ## Building
 
@@ -61,9 +62,37 @@ xcodebuild -project elma.xcodeproj -configuration Release
 ./Release/unittest
 ```
 
+## Generating Lexer and Parser
+
+To generate lexer and parser, use the following command:
+
+```sh
+# Generating lexer using Flex
+flex src/Parser/Lexer.l
+
+# Generating parser using Bison
+bison src/Parser/Parser.y
+```
+
 ## Open Source Software used in Elma
 
 All of the dependencies that Elma needs to build or run.
 
 - [Catch2](https://github.com/catchorg/Catch2)
 - [Duktape](https://github.com/svaarala/duktape)
+
+To update all third party libraries, execute the following command:
+
+```sh
+cd path/to/elma
+
+# Updating Catch2
+curl -L https://github.com/catchorg/Catch2/releases/download/v2.2.2/catch.hpp -o thirdparty/catch2/catch.hpp
+
+# Updating Duktape
+curl -O -L https://github.com/svaarala/duktape/releases/download/v2.2.1/duktape-2.2.1.tar.xz
+tar xpvf duktape-2.2.1.tar.xz
+cp -R duktape-2.2.1/src/ thirdparty/duktape
+rm duktape-2.2.1.tar.xz
+rm -R duktape-2.2.1
+```
