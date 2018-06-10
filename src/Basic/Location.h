@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <memory>
+#include <ostream>
 #include <string>
 
 namespace elma {
@@ -22,25 +23,36 @@ public:
     int offset;
 
 public:
-    bool isValid() const noexcept { return (line > 0) && (offset >= 0); }
+    bool isValid() const noexcept { return line > 0; }
 
-    bool operator==(const Position& rhs) const
+    bool operator==(const Position& rhs) const noexcept
     {
         return (line == rhs.line) && (column == rhs.column);
     }
 
-    bool operator!=(const Position& rhs) const
+    bool operator!=(const Position& rhs) const noexcept
     {
         return (line != rhs.line) || (column != rhs.column);
     }
 
-    bool operator<(const Position& rhs) const { return offset < rhs.offset; }
+    bool operator<(const Position& rhs) const
+    {
+#if defined(DEBUG) && !defined(NDEBUG)
+        if (line == rhs.line) {
+            assert((column < rhs.column) == (offset < rhs.offset));
+        }
+        else {
+            assert((line < rhs.line) == (offset < rhs.offset));
+        }
+#endif
+        return offset < rhs.offset;
+    }
 
     std::string toString() const;
 };
 
 class Location final {
-private:
+public:
     Position begin;
     Position end;
 
@@ -71,5 +83,12 @@ public:
 
     std::string toString() const;
 };
+
+template <typename Char>
+inline std::basic_ostream<Char>& operator<<(std::basic_ostream<Char>& os, const Location& loc)
+{
+    os << loc.toString();
+    return os;
+}
 
 } // namespace elma
