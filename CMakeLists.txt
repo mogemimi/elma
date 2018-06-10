@@ -11,6 +11,15 @@ include_directories(
     thirdparty
 )
 
+source_group(AST REGULAR_EXPRESSION src/AST/*)
+source_group(Basic REGULAR_EXPRESSION src/Basic/*)
+source_group(CodeGen REGULAR_EXPRESSION src/CodeGen/*)
+source_group(Driver REGULAR_EXPRESSION src/Driver/*)
+source_group(Parser REGULAR_EXPRESSION src/Parser/*)
+source_group(Printer REGULAR_EXPRESSION src/Printer/*)
+source_group(Sema REGULAR_EXPRESSION src/Sema/*)
+source_group(thirdparty\\duktape REGULAR_EXPRESSION thirdparty/duktape/*)
+
 add_library(elma STATIC
     src/Basic/Forward.h
     src/Basic/Location.cpp
