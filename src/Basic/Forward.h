@@ -18,4 +18,6 @@ class Expr;
 class Decl;
 class Type;
 
+class DiagnosticHandler;
+
 } // namespace elma

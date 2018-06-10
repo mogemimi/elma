@@ -32,6 +32,8 @@ add_library(elma STATIC
     src/AST/Stmt.h
     src/AST/Type.cpp
     src/AST/Type.h
+    src/Basic/Diagnostic.cpp
+    src/Basic/Diagnostic.h
     src/Basic/Forward.h
     src/Basic/Location.cpp
     src/Basic/Location.h
