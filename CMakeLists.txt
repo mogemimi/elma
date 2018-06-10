@@ -24,6 +24,8 @@ add_library(elma STATIC
     src/Basic/Forward.h
     src/Basic/Location.cpp
     src/Basic/Location.h
+    src/Basic/StringHelper.cpp
+    src/Basic/StringHelper.h
     src/Driver/Driver.cpp
     src/Driver/Driver.h
     thirdparty/duktape/duktape.c
