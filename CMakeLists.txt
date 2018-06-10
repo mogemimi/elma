@@ -21,6 +21,15 @@ source_group(Sema REGULAR_EXPRESSION src/Sema/*)
 source_group(thirdparty\\duktape REGULAR_EXPRESSION thirdparty/duktape/*)
 
 add_library(elma STATIC
+    src/AST/Decl.cpp
+    src/AST/Decl.h
+    src/AST/Expr.cpp
+    src/AST/Expr.h
+    src/AST/Node.h
+    src/AST/Stmt.cpp
+    src/AST/Stmt.h
+    src/AST/Type.cpp
+    src/AST/Type.h
     src/Basic/Forward.h
     src/Basic/Location.cpp
     src/Basic/Location.h

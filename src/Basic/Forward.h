@@ -9,4 +9,10 @@ class Position;
 // Driver
 class Driver;
 
+class Node;
+class Stmt;
+class Expr;
+class Decl;
+class Type;
+
 } // namespace elma
