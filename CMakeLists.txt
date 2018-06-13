@@ -23,6 +23,8 @@ source_group(thirdparty\\duktape REGULAR_EXPRESSION thirdparty/duktape/*)
 add_library(elma STATIC
     src/AST/ASTContext.cpp
     src/AST/ASTContext.h
+    src/AST/ASTVisitor.cpp
+    src/AST/ASTVisitor.h
     src/AST/Comment.cpp
     src/AST/Comment.h
     src/AST/Decl.cpp

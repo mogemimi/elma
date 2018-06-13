@@ -13,6 +13,7 @@ class Comment;
 enum class CommentKind;
 
 class ASTContext;
+class ASTVisitor;
 class Node;
 class Stmt;
 class Expr;
