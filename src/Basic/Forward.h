@@ -12,10 +12,13 @@ class Driver;
 class Comment;
 enum class CommentKind;
 
+class ASTContext;
 class Node;
 class Stmt;
 class Expr;
 class Decl;
+class NamedDecl;
+class TranslationUnitDecl;
 class Type;
 
 class DiagnosticHandler;
