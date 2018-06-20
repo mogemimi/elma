@@ -5,6 +5,20 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+if ((CMAKE_CXX_COMPILER_ID MATCHES "Clang") OR (CMAKE_CXX_COMPILER_ID MATCHES "GNU"))
+    add_compile_options(
+        -Weffc++
+        -Wextra
+        -Wnon-virtual-dtor
+        -Wuninitialized
+        -Wunreachable-code
+        -Wshadow
+
+        -Wno-unused-parameter
+        -Wno-unused-variable
+    )
+endif()
+
 include_directories(
     src
     thirdparty/catch2
