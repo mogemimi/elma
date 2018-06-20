@@ -5,6 +5,8 @@
 namespace elma {
 
 enum class NodeKind {
+    Identifier,
+
     TranslationUnitDecl,
     NamedDecl,
 };

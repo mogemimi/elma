@@ -13,6 +13,8 @@ public:
     virtual bool begin(std::shared_ptr<Node> node);
     virtual void end(std::shared_ptr<Node> node);
 
+    virtual void visit(std::shared_ptr<Identifier> ident);
+
     virtual void visit(std::shared_ptr<TranslationUnitDecl> decl);
     virtual void visit(std::shared_ptr<NamedDecl> decl);
 };

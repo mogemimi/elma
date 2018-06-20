@@ -2,6 +2,7 @@
 #include "AST/ASTContext.h"
 #include "AST/Decl.h"
 #include "AST/Expr.h"
+#include "AST/Identifier.h"
 #include "AST/Stmt.h"
 #include <cassert>
 #include <utility>
@@ -30,6 +31,10 @@ void walk(ASTVisitor* visitor, std::shared_ptr<Node> node)
     }
 
     switch (node->getKind()) {
+    case NodeKind::Identifier: {
+        visitor->visit(std::static_pointer_cast<Identifier>(node));
+        break;
+    }
     case NodeKind::TranslationUnitDecl: {
         visitor->visit(std::static_pointer_cast<TranslationUnitDecl>(node));
         break;

@@ -45,6 +45,8 @@ add_library(elma STATIC
     src/AST/Decl.h
     src/AST/Expr.cpp
     src/AST/Expr.h
+    src/AST/Identifier.cpp
+    src/AST/Identifier.h
     src/AST/Node.h
     src/AST/Stmt.cpp
     src/AST/Stmt.h
@@ -59,6 +61,8 @@ add_library(elma STATIC
     src/Basic/StringHelper.h
     src/Driver/Driver.cpp
     src/Driver/Driver.h
+    src/Sema/Entity.cpp
+    src/Sema/Entity.h
     thirdparty/duktape/duktape.c
 )
 

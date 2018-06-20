@@ -14,6 +14,7 @@ enum class CommentKind;
 
 class ASTContext;
 class ASTVisitor;
+class Identifier;
 class Node;
 class Stmt;
 class Expr;
@@ -22,6 +23,7 @@ class NamedDecl;
 class TranslationUnitDecl;
 class Type;
 
+class Entity;
 class DiagnosticHandler;
 
 } // namespace elma
