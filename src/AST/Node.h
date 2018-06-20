@@ -8,6 +8,12 @@ enum class NodeKind {
     Identifier,
 
     TranslationUnitDecl,
+    VarDecl,
+    BindingDecl,
+    DecompositionDecl,
+    FuncDecl,
+    ParamDecl,
+    ClassDecl,
     NamedDecl,
 
     SimpleIdentTypeRepr,

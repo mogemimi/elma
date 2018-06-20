@@ -2,32 +2,54 @@
 
 namespace elma {
 
-// Basic
+// NOTE: Basic
 class Location;
 class Position;
 
-// Driver
+// NOTE: Driver
 class Driver;
 
+// NOTE: Preprocessor
 class Comment;
 enum class CommentKind;
 
+// NOTE: AST
 class ASTContext;
 class ASTVisitor;
 class Identifier;
 class Node;
-class Stmt;
-class Expr;
+enum class NodeKind;
+
+// NOTE: Declarations
 class Decl;
-class NamedDecl;
 class TranslationUnitDecl;
+class VarDecl;
+class BindingDecl;
+class DecompositionDecl;
+class FuncDecl;
+class ParamDecl;
+class ClassDecl;
+class NamedDecl;
+
+// NOTE: Expressions
+class Expr;
+
+// NOTE: Statements
+class Stmt;
+
+// NOTE: Type Representations
 class TypeRepr;
 class SimpleIdentTypeRepr;
 class GenericIdentTypeRepr;
 class OptionalTypeRepr;
+
+// NOTE: Type
 class Type;
 
+// NOTE: Sema
 class Entity;
+
+// NOTE: Diagnostic
 class DiagnosticHandler;
 
 } // namespace elma
