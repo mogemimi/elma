@@ -63,13 +63,19 @@ add_library(elma STATIC
     src/Basic/StringHelper.h
     src/Driver/Driver.cpp
     src/Driver/Driver.h
+    src/Parser/Lexer.cpp
+    src/Parser/Lexer.h
+    src/Parser/Parser.cpp
+    src/Parser/Parser.h
     src/Sema/Entity.cpp
     src/Sema/Entity.h
     thirdparty/duktape/duktape.c
 )
 
 add_executable(unittest
+    test/LexerTest.cpp
     test/main.cpp
+    test/ParserTest.cpp
 )
 
 target_link_libraries(unittest elma)

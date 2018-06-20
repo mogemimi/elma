@@ -12,7 +12,10 @@ class ASTContext final {
 public:
     std::shared_ptr<TranslationUnitDecl> translationUnit;
     std::vector<std::shared_ptr<Comment>> comments;
-    std::vector<std::shared_ptr<NamedDecl>> unresolvedIdentifiers;
+    std::vector<std::shared_ptr<Identifier>> unresolvedIdentifiers;
+
+public:
+    std::shared_ptr<TranslationUnitDecl> getTranslationUnitDecl() const;
 };
 
 } // namespace elma
