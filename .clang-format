@@ -8,6 +8,7 @@ AllowShortFunctionsOnASingleLine: Inline
 BreakBeforeBraces: Stroustrup
 BreakBeforeInheritanceComma: true
 BreakConstructorInitializersBeforeComma: true
+BreakStringLiterals: false
 BinPackArguments: false
 BinPackParameters: false
 DerivePointerAlignment: true
