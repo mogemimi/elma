@@ -5,6 +5,13 @@
 
 namespace elma {
 
+Comment::Comment(Location loc, CommentKind kindIn, const std::string& textIn)
+    : location(loc)
+    , kind(kindIn)
+    , text(textIn)
+{
+}
+
 Location Comment::getLocation() const
 {
     return location;
@@ -62,15 +69,6 @@ std::string Comment::dump() const
     std::stringstream ss;
     ss << location.toString() << ": Comment Style = " << style << "\n" << text;
     return ss.str();
-}
-
-std::shared_ptr<Comment> Comment::make(Location loc, CommentKind kind, const std::string& text)
-{
-    auto comment = std::make_shared<Comment>();
-    comment->location = loc;
-    comment->kind = kind;
-    comment->text = text;
-    return comment;
 }
 
 } // namespace elma

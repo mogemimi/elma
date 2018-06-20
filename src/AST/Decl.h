@@ -17,29 +17,35 @@ class TranslationUnitDecl final
     : public Decl
     , public std::enable_shared_from_this<TranslationUnitDecl> {
 private:
+    Location location;
     std::vector<std::shared_ptr<Decl>> declarations;
 
 public:
+    TranslationUnitDecl(
+        const Location& loc, const std::vector<std::shared_ptr<Decl>>& declarations);
+
     std::vector<std::shared_ptr<Decl>> getDeclarations() const { return declarations; }
 
     NodeKind getKind() const noexcept override { return NodeKind::TranslationUnitDecl; }
 
-    static std::shared_ptr<TranslationUnitDecl>
-    make(const Location& loc, const std::vector<std::shared_ptr<Decl>>& declarations);
+    Location getLocation() const noexcept override { return location; }
 };
 
 class NamedDecl final
     : public Decl
     , public std::enable_shared_from_this<NamedDecl> {
 private:
-    std::string name;
+    Location location;
+    std::shared_ptr<Identifier> ident;
 
 public:
+    NamedDecl(const Location& loc, const std::shared_ptr<Identifier>& n);
+
     NodeKind getKind() const noexcept override { return NodeKind::NamedDecl; }
 
-    std::string getName() const;
+    Location getLocation() const noexcept override { return location; }
 
-    static std::shared_ptr<NamedDecl> make(const Location& loc, const std::string& v);
+    std::shared_ptr<Identifier> getIdentifier() const { return ident; }
 };
 
 } // namespace elma

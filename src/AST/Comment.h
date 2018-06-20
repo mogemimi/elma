@@ -10,13 +10,15 @@ enum class CommentKind {
     Line,
 };
 
-class Comment final {
+class Comment final : public std::enable_shared_from_this<Comment> {
 private:
     Location location;
     CommentKind kind;
     std::string text;
 
 public:
+    Comment(Location loc, CommentKind kind, const std::string& text);
+
     Location getLocation() const;
 
     CommentKind getKind() const;
@@ -24,8 +26,6 @@ public:
     std::string getText() const;
 
     std::string dump() const;
-
-    static std::shared_ptr<Comment> make(Location loc, CommentKind kind, const std::string& text);
 };
 
 } // namespace elma

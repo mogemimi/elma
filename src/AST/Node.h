@@ -12,15 +12,12 @@ enum class NodeKind {
 };
 
 class Node {
-protected:
-    Location location;
-
 public:
     virtual ~Node() = default;
 
     virtual NodeKind getKind() const noexcept = 0;
 
-    Location getLocation() const { return location; }
+    virtual Location getLocation() const noexcept = 0;
 };
 
 } // namespace elma

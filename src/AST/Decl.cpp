@@ -4,26 +4,17 @@
 
 namespace elma {
 
-std::shared_ptr<TranslationUnitDecl> TranslationUnitDecl::make(
-    const Location& loc, const std::vector<std::shared_ptr<Decl>>& declarations)
+TranslationUnitDecl::TranslationUnitDecl(
+    const Location& loc, const std::vector<std::shared_ptr<Decl>>& d)
+    : location(loc)
+    , declarations(d)
 {
-    auto decl = std::make_shared<TranslationUnitDecl>();
-    decl->location = loc;
-    decl->declarations = declarations;
-    return decl;
 }
 
-std::string NamedDecl::getName() const
+NamedDecl::NamedDecl(const Location& loc, const std::shared_ptr<Identifier>& n)
+    : location(loc)
+    , ident(n)
 {
-    return name;
-}
-
-std::shared_ptr<NamedDecl> NamedDecl::make(const Location& loc, const std::string& v)
-{
-    auto decl = std::make_shared<NamedDecl>();
-    decl->location = loc;
-    decl->name = v;
-    return decl;
 }
 
 } // namespace elma
