@@ -33,6 +33,29 @@ class NamedDecl;
 
 // NOTE: Expressions
 class Expr;
+class IntegerLiteral;
+class DoubleLiteral;
+class BoolLiteral;
+class StringLiteral;
+class NullLiteral;
+class IdentifierExpr;
+class ParenExpr;
+class UnaryExpr;
+class BinaryExpr;
+class AssignExpr;
+class ConditionalOperator;
+class NullConditionalOperator;
+class MemberExpr;
+class SubscriptExpr;
+class ArrayLiteral;
+class MapEntry;
+class MapLiteral;
+class CallExpr;
+class FuncLiteral;
+class ImplicitConversionExpr;
+enum class UnaryExprKind;
+enum class BinaryExprKind;
+enum class AssignExprKind;
 
 // NOTE: Statements
 class Stmt;
