@@ -73,6 +73,7 @@ add_library(elma STATIC
 )
 
 add_executable(unittest
+    test/CommentTest.cpp
     test/LexerTest.cpp
     test/main.cpp
     test/ParserTest.cpp
