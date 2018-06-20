@@ -81,6 +81,7 @@ enum class BuiltinTypeKind;
 
 // NOTE: Sema
 class Entity;
+class Scope;
 
 // NOTE: Diagnostic
 class DiagnosticHandler;

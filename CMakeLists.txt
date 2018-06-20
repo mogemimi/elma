@@ -75,12 +75,17 @@ add_library(elma STATIC
     src/Printer/PrettyPrinter.h
     src/Sema/Entity.cpp
     src/Sema/Entity.h
+    src/Sema/IdentifierResolver.cpp
+    src/Sema/IdentifierResolver.h
+    src/Sema/Scope.cpp
+    src/Sema/Scope.h
     thirdparty/duktape/duktape.c
 )
 
 add_executable(unittest
     test/CommentTest.cpp
     test/ASTDumperTest.cpp
+    test/IdentifierResolverTest.cpp
     test/LexerTest.cpp
     test/main.cpp
     test/ParserTest.cpp
