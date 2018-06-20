@@ -77,6 +77,7 @@ class OptionalTypeRepr;
 
 // NOTE: Type
 class Type;
+enum class BuiltinTypeKind;
 
 // NOTE: Sema
 class Entity;
