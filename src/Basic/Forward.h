@@ -59,6 +59,15 @@ enum class AssignExprKind;
 
 // NOTE: Statements
 class Stmt;
+class CompoundStmt;
+class DeclStmt;
+class ExprStmt;
+class ReturnStmt;
+class DeferStmt;
+class IfStmt;
+class WhileStmt;
+class ForStmt;
+class ForEachStmt;
 
 // NOTE: Type Representations
 class TypeRepr;

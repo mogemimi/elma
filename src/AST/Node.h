@@ -37,6 +37,16 @@ enum class NodeKind {
     FuncLiteral,
     ImplicitConversionExpr,
 
+    CompoundStmt,
+    DeclStmt,
+    ExprStmt,
+    ReturnStmt,
+    DeferStmt,
+    IfStmt,
+    WhileStmt,
+    ForStmt,
+    ForEachStmt,
+
     SimpleIdentTypeRepr,
     GenericIdentTypeRepr,
     OptionalTypeRepr,
