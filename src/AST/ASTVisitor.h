@@ -17,6 +17,10 @@ public:
 
     virtual void visit(std::shared_ptr<TranslationUnitDecl> decl);
     virtual void visit(std::shared_ptr<NamedDecl> decl);
+
+    virtual void visit(std::shared_ptr<SimpleIdentTypeRepr> repr);
+    virtual void visit(std::shared_ptr<GenericIdentTypeRepr> repr);
+    virtual void visit(std::shared_ptr<OptionalTypeRepr> repr);
 };
 
 namespace AST {

@@ -9,6 +9,10 @@ enum class NodeKind {
 
     TranslationUnitDecl,
     NamedDecl,
+
+    SimpleIdentTypeRepr,
+    GenericIdentTypeRepr,
+    OptionalTypeRepr,
 };
 
 class Node {

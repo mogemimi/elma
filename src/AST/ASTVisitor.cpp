@@ -4,6 +4,7 @@
 #include "AST/Expr.h"
 #include "AST/Identifier.h"
 #include "AST/Stmt.h"
+#include "AST/TypeRepr.h"
 #include <cassert>
 #include <utility>
 
@@ -43,6 +44,18 @@ void walk(ASTVisitor* visitor, std::shared_ptr<Node> node)
         visitor->visit(std::static_pointer_cast<NamedDecl>(node));
         break;
     }
+    case NodeKind::SimpleIdentTypeRepr: {
+        visitor->visit(std::static_pointer_cast<SimpleIdentTypeRepr>(node));
+        break;
+    }
+    case NodeKind::GenericIdentTypeRepr: {
+        visitor->visit(std::static_pointer_cast<GenericIdentTypeRepr>(node));
+        break;
+    }
+    case NodeKind::OptionalTypeRepr: {
+        visitor->visit(std::static_pointer_cast<OptionalTypeRepr>(node));
+        break;
+    }
     default:
         // error("unreachable");
         break;
@@ -72,6 +85,22 @@ void ASTVisitor::visit(std::shared_ptr<TranslationUnitDecl> decl)
 void ASTVisitor::visit(std::shared_ptr<NamedDecl> decl)
 {
     // Nothing to do
+}
+
+void ASTVisitor::visit(std::shared_ptr<SimpleIdentTypeRepr> repr)
+{
+    AST::walk(this, repr->getIdentifier());
+}
+
+void ASTVisitor::visit(std::shared_ptr<GenericIdentTypeRepr> repr)
+{
+    AST::walk(this, repr->getIdentifier());
+    AST::walkChildren(this, repr->getArguments());
+}
+
+void ASTVisitor::visit(std::shared_ptr<OptionalTypeRepr> repr)
+{
+    AST::walk(this, repr->getBase());
 }
 
 } // namespace elma

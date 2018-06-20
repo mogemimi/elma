@@ -21,6 +21,10 @@ class Expr;
 class Decl;
 class NamedDecl;
 class TranslationUnitDecl;
+class TypeRepr;
+class SimpleIdentTypeRepr;
+class GenericIdentTypeRepr;
+class OptionalTypeRepr;
 class Type;
 
 class Entity;
