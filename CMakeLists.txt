@@ -67,6 +67,8 @@ add_library(elma STATIC
     src/Parser/Lexer.h
     src/Parser/Parser.cpp
     src/Parser/Parser.h
+    src/Printer/ASTDumper.cpp
+    src/Printer/ASTDumper.h
     src/Sema/Entity.cpp
     src/Sema/Entity.h
     thirdparty/duktape/duktape.c
@@ -74,6 +76,7 @@ add_library(elma STATIC
 
 add_executable(unittest
     test/CommentTest.cpp
+    test/ASTDumperTest.cpp
     test/LexerTest.cpp
     test/main.cpp
     test/ParserTest.cpp
