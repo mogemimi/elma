@@ -1,7 +1,9 @@
 #pragma once
 
+#include "Basic/Forward.h"
 #include <memory>
 #include <string>
+#include <vector>
 
 namespace elma {
 
@@ -10,6 +12,8 @@ enum class TypeKind {
     ArrayType,
     MapType,
     OptionalType,
+    FunctionType,
+    ClassType,
 };
 
 class Type {
@@ -74,6 +78,31 @@ public:
 
 public:
     OptionalType();
+
+    std::string dump() const override;
+
+    TypeKind getKind() const override;
+};
+
+class FunctionType final : public Type {
+public:
+    std::shared_ptr<Type> returnType;
+    std::vector<std::shared_ptr<Type>> parameterTypes;
+
+public:
+    FunctionType(const std::shared_ptr<Type>& to, const std::vector<std::shared_ptr<Type>>& from);
+
+    std::string dump() const override;
+
+    TypeKind getKind() const override;
+};
+
+class ClassType final : public Type {
+public:
+    std::weak_ptr<ClassDecl> classDecl;
+
+public:
+    explicit ClassType(const std::shared_ptr<ClassDecl>& classDecl);
 
     std::string dump() const override;
 
