@@ -260,6 +260,9 @@ void ASTVisitor::visit(std::shared_ptr<FuncDecl> decl)
         AST::walk(this, ident);
     }
     AST::walkChildren(this, decl->getParameters());
+    if (auto repr = decl->getReturnType()) {
+        AST::walk(this, repr);
+    }
     AST::walk(this, decl->getBody());
 }
 
@@ -301,7 +304,9 @@ void ASTVisitor::visit(std::shared_ptr<ExprStmt> stmt)
 
 void ASTVisitor::visit(std::shared_ptr<ReturnStmt> stmt)
 {
-    AST::walk(this, stmt->getExpr());
+    if (auto expr = stmt->getExpr()) {
+        AST::walk(this, expr);
+    }
 }
 
 void ASTVisitor::visit(std::shared_ptr<IfStmt> stmt)
