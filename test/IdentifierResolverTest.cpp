@@ -56,6 +56,14 @@ TEST_CASE("IdentifierResolver can resolve identifier", "[identifier-resolve]")
         REQUIRE(!resolveIdentifiers(diag, source));
         REQUIRE(stream->hasError("error: 'x' was not declared in this scope."));
     }
+    SECTION("resolver prevents misuse of the variable before its declaration")
+    {
+        constexpr auto source = R"(func f() {
+            let x = x;
+        })";
+        REQUIRE(!resolveIdentifiers(diag, source));
+        REQUIRE(stream->hasError("error: 'x' was not declared in this scope."));
+    }
     SECTION("resolving function parameter name")
     {
         constexpr auto source = R"(func f(x) {
@@ -106,7 +114,7 @@ TEST_CASE("IdentifierResolver can resolve identifier", "[identifier-resolve]")
         )";
         REQUIRE(resolveIdentifiers(diag, source));
     }
-    SECTION("resolving type representations")
+    SECTION("resolving type representations inside function body")
     {
         constexpr auto source = R"(func test() {
             let a : Int;
@@ -124,5 +132,20 @@ TEST_CASE("IdentifierResolver can resolve identifier", "[identifier-resolve]")
     {
         constexpr auto source = R"(func f(a : Int, b : String?) -> Void {})";
         REQUIRE(resolveIdentifiers(diag, source));
+    }
+    SECTION("resolver emits an error when declaring duplicate function")
+    {
+        constexpr auto source = R"(
+        func Foo() {}
+        func Foo() {}
+        )";
+        REQUIRE(!resolveIdentifiers(diag, source));
+        REQUIRE(stream->hasError("error: 'Foo' redeclared in this block."));
+    }
+    SECTION("resolver emits an error when declaring duplicate parameters")
+    {
+        constexpr auto source = R"(func f(x, x) {})";
+        REQUIRE(!resolveIdentifiers(diag, source));
+        REQUIRE(stream->hasError("error: 'x' redeclared in this block."));
     }
 }

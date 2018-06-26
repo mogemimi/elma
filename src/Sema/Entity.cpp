@@ -16,7 +16,7 @@ std::string Entity::getName() const
 
 std::shared_ptr<Identifier> Entity::getDecl() const
 {
-    assert((kind == EntityKind::Var) || (kind == EntityKind::Const));
+    assert((kind == EntityKind::Var) || (kind == EntityKind::Const) || (kind == EntityKind::Func));
     return decl.lock();
 }
 
@@ -45,6 +45,16 @@ Entity::makeConstant(const std::string& name, const std::shared_ptr<Identifier>&
 {
     auto entity = std::make_shared<Entity>();
     entity->kind = EntityKind::Const;
+    entity->name = name;
+    entity->decl = decl;
+    return entity;
+}
+
+std::shared_ptr<Entity>
+Entity::makeFunction(const std::string& name, const std::shared_ptr<Identifier>& decl)
+{
+    auto entity = std::make_shared<Entity>();
+    entity->kind = EntityKind::Func;
     entity->name = name;
     entity->decl = decl;
     return entity;

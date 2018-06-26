@@ -10,6 +10,7 @@ enum class EntityKind {
     Type,
     Var,
     Const,
+    Func,
 };
 
 class Entity final {
@@ -35,6 +36,9 @@ public:
 
     static std::shared_ptr<Entity>
     makeConstant(const std::string& name, const std::shared_ptr<Identifier>& decl);
+
+    static std::shared_ptr<Entity>
+    makeFunction(const std::string& name, const std::shared_ptr<Identifier>& decl);
 
     static std::shared_ptr<Entity>
     makeType(const std::string& name, const std::shared_ptr<Type>& type);
