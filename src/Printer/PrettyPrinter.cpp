@@ -174,13 +174,26 @@ void PrettyPrinter::visit(std::shared_ptr<ClassDecl> decl)
 
     {
         indent++;
+
+        // TODO: Replace the following with std::optional<NodeKind>
+        auto prevDeclKind = NodeKind::VarDecl;
+        bool prevDeclKindEnabled = false;
+
         for (const auto& member : decl->getMembers()) {
             writeString("\n");
+            if (prevDeclKindEnabled && (prevDeclKind != member->getKind())) {
+                writeString("\n");
+            }
             writeIndent();
             AST::walk(this, member);
             if (member->getKind() == NodeKind::VarDecl) {
                 writeString(";");
             }
+            prevDeclKind = member->getKind();
+            prevDeclKindEnabled = true;
+        }
+        if (!prevDeclKindEnabled || (prevDeclKind == NodeKind::VarDecl)) {
+            writeString("\n");
         }
         indent--;
         assert(indent >= 0);

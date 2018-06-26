@@ -77,6 +77,7 @@ TEST_CASE("pretty print", "[prettyprinter]")
         constexpr auto source = "class Vector2 {\n"
                                 "    let x: Int = 0;\n"
                                 "    let y: Int = 0;\n"
+                                "\n"
                                 "    func dot(v: Vector2) -> Int {\n"
                                 "        return x * v.x + y * v.y;\n"
                                 "    }\n"
@@ -84,6 +85,19 @@ TEST_CASE("pretty print", "[prettyprinter]")
                                 "    func cross(v: Vector2) -> Int {\n"
                                 "        return x * v.y - y * v.x;\n"
                                 "    }\n"
+                                "}\n";
+        REQUIRE(prettyPrint(diag, source) == source);
+    }
+    SECTION("printer prints var declaration in class")
+    {
+        constexpr auto source = "class App {\n"
+                                "    let x = 42;\n"
+                                "}\n";
+        REQUIRE(prettyPrint(diag, source) == source);
+    }
+    SECTION("printer prints empty class")
+    {
+        constexpr auto source = "class App {\n"
                                 "}\n";
         REQUIRE(prettyPrint(diag, source) == source);
     }
