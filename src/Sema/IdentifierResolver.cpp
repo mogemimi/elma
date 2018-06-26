@@ -204,6 +204,33 @@ void IdentifierResolver::visit(std::shared_ptr<ParamDecl> decl)
     ASTVisitor::visit(decl);
 }
 
+void IdentifierResolver::visit(std::shared_ptr<ClassDecl> decl)
+{
+    auto scope = getCurrentScope();
+    assert(scope);
+
+    auto ident = decl->getIdentifier();
+    assert(ident);
+    assert(!ident->getName().empty());
+
+    auto alt = scope->findAlt(ident->getName());
+    if (alt) {
+        error(ident->getLocation(), "'" + ident->getName() + "' redeclared in this block.");
+        return;
+    }
+
+    auto type = std::make_shared<ClassType>(decl);
+    auto entity = Entity::makeType(ident->getName(), type);
+    scope->insert(entity);
+    ident->setEntity(entity);
+
+    if (context) {
+        context->entities.push_back(entity);
+    }
+
+    ASTVisitor::visit(decl);
+}
+
 void IdentifierResolver::visit(std::shared_ptr<SimpleIdentTypeRepr> repr)
 {
     auto scope = getCurrentScope();

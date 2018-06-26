@@ -39,6 +39,7 @@ public:
     void visit(std::shared_ptr<VarDecl> decl) override;
     void visit(std::shared_ptr<FuncDecl> decl) override;
     void visit(std::shared_ptr<ParamDecl> decl) override;
+    void visit(std::shared_ptr<ClassDecl> decl) override;
 
     void visit(std::shared_ptr<IdentifierExpr> expr) override;
 

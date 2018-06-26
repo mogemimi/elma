@@ -133,6 +133,31 @@ TEST_CASE("IdentifierResolver can resolve identifier", "[identifier-resolve]")
         constexpr auto source = R"(func f(a : Int, b : String?) -> Void {})";
         REQUIRE(resolveIdentifiers(diag, source));
     }
+    SECTION("resolving type representations inside class body")
+    {
+        constexpr auto source = R"(class Foo {
+            let a : Int;
+            let b : Double;
+            let c : Bool;
+            let d : String;
+            let e : Any;
+            let f : Array<Int>;
+            let g : Map<String, Double>;
+            let h : String?;
+        })";
+        REQUIRE(resolveIdentifiers(diag, source));
+    }
+    SECTION("resolving type representation using user-defined class")
+    {
+        constexpr auto source = R"(
+        class Foo {}
+        func f(x : Foo) -> Foo {
+            let a : Foo;
+            return x;
+        }
+        )";
+        REQUIRE(resolveIdentifiers(diag, source));
+    }
     SECTION("resolver emits an error when declaring duplicate function")
     {
         constexpr auto source = R"(
@@ -141,6 +166,41 @@ TEST_CASE("IdentifierResolver can resolve identifier", "[identifier-resolve]")
         )";
         REQUIRE(!resolveIdentifiers(diag, source));
         REQUIRE(stream->hasError("error: 'Foo' redeclared in this block."));
+    }
+    SECTION("resolver emits an error when declaring function using duplicate identifier")
+    {
+        constexpr auto source = R"(
+        class Foo {}
+        func Foo() {}
+        )";
+        REQUIRE(!resolveIdentifiers(diag, source));
+        REQUIRE(stream->hasError("error: 'Foo' redeclared in this block."));
+    }
+    SECTION("resolver emits an error when declaring class using duplicate identifier")
+    {
+        constexpr auto source = R"(
+        func Foo() {}
+        class Foo {}
+        )";
+        REQUIRE(!resolveIdentifiers(diag, source));
+        REQUIRE(stream->hasError("error: 'Foo' redeclared in this block."));
+    }
+    SECTION("resolver emits an error when declaring duplicate classes")
+    {
+        constexpr auto source = R"(
+        class Foo {}
+        class Foo {}
+        )";
+        REQUIRE(!resolveIdentifiers(diag, source));
+        REQUIRE(stream->hasError("error: 'Foo' redeclared in this block."));
+    }
+    SECTION("resolver ignores duplicate identifier inside function parameters")
+    {
+        constexpr auto source = R"(
+        class Foo {}
+        func f(Foo : Int) {}
+        )";
+        REQUIRE(resolveIdentifiers(diag, source));
     }
     SECTION("resolver emits an error when declaring duplicate parameters")
     {
