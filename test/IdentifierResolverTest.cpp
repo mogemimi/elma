@@ -64,6 +64,37 @@ TEST_CASE("IdentifierResolver can resolve identifier", "[identifier-resolve]")
         REQUIRE(!resolveIdentifiers(diag, source));
         REQUIRE(stream->hasError("error: 'x' was not declared in this scope."));
     }
+    SECTION("resolver emits an error when referencing undefined function name")
+    {
+        constexpr auto source = R"(func f() {
+            let g = (func () { return g; })();
+        })";
+        REQUIRE(!resolveIdentifiers(diag, source));
+        REQUIRE(stream->hasError("error: 'g' was not declared in this scope."));
+    }
+    SECTION("variable shadowing with function parameter")
+    {
+        constexpr auto source = R"(func f() {
+            let x;
+            let g = func (x) {};
+        })";
+        REQUIRE(resolveIdentifiers(diag, source));
+    }
+    SECTION("variable shadowing between function parameter and local variable")
+    {
+        constexpr auto source = R"(func f() {
+            let g = func (x) {};
+            let x;
+        })";
+        REQUIRE(resolveIdentifiers(diag, source));
+    }
+    SECTION("resolver doesn't emit any error when using function name as a parameter")
+    {
+        constexpr auto source = R"(func f() {
+            let g = func (g) {};
+        })";
+        REQUIRE(resolveIdentifiers(diag, source));
+    }
     SECTION("resolving function parameter name")
     {
         constexpr auto source = R"(func f(x) {

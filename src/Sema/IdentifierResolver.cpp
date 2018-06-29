@@ -125,8 +125,7 @@ void IdentifierResolver::visit(std::shared_ptr<VarDecl> decl)
     auto ident = decl->getIdentifier();
     assert(ident);
 
-    auto alt = scope->findAlt(ident->getName());
-    if (alt) {
+    if (auto alt = scope->findAlt(ident->getName())) {
         error(ident->getLocation(), "'" + ident->getName() + "' redeclared in this block.");
         return;
     }
@@ -144,6 +143,8 @@ void IdentifierResolver::visit(std::shared_ptr<VarDecl> decl)
     }
 
     ASTVisitor::visit(decl);
+
+    assert(!scope->findAlt(ident->getName()));
 
     // NOTE: To prevent misuse of the variable before its declaration, such as "let x = x;".
     scope->insert(entity);
@@ -229,6 +230,16 @@ void IdentifierResolver::visit(std::shared_ptr<ClassDecl> decl)
     }
 
     ASTVisitor::visit(decl);
+}
+
+void IdentifierResolver::visit(std::shared_ptr<FuncLiteral> expr)
+{
+    auto scope = std::make_shared<Scope>(getCurrentScope());
+    pushScope(scope);
+
+    ASTVisitor::visit(expr);
+
+    popScope();
 }
 
 void IdentifierResolver::visit(std::shared_ptr<SimpleIdentTypeRepr> repr)
