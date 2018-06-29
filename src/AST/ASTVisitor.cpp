@@ -368,22 +368,6 @@ void ASTVisitor::visit(std::shared_ptr<DeferStmt> stmt)
     }
 }
 
-void ASTVisitor::visit(std::shared_ptr<CallExpr> expr)
-{
-    if (auto callee = expr->getCallee()) {
-        AST::walk(this, callee);
-    }
-    AST::walkChildren(this, expr->getArguments());
-}
-
-void ASTVisitor::visit(std::shared_ptr<FuncLiteral> expr)
-{
-    AST::walkChildren(this, expr->getParameters());
-    if (auto compoundStmt = expr->getBody()) {
-        AST::walk(this, compoundStmt);
-    }
-}
-
 void ASTVisitor::visit(std::shared_ptr<IntegerLiteral> expr)
 {
     // Nothing to do
@@ -475,6 +459,23 @@ void ASTVisitor::visit(std::shared_ptr<MapEntry> expr)
 void ASTVisitor::visit(std::shared_ptr<MapLiteral> expr)
 {
     AST::walkChildren(this, expr->getEntries());
+}
+
+void ASTVisitor::visit(std::shared_ptr<CallExpr> expr)
+{
+    if (auto callee = expr->getCallee()) {
+        AST::walk(this, callee);
+    }
+    AST::walkChildren(this, expr->getArguments());
+}
+
+void ASTVisitor::visit(std::shared_ptr<FuncLiteral> expr)
+{
+    AST::walkChildren(this, expr->getParameters());
+    if (auto repr = expr->getReturnType()) {
+        AST::walk(this, repr);
+    }
+    AST::walk(this, expr->getBody());
 }
 
 void ASTVisitor::visit(std::shared_ptr<ImplicitConversionExpr> expr)
