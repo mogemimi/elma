@@ -203,8 +203,9 @@ TopLevelDeclarationList:
 ;
 
 TopLevelDeclaration:
-  ClassDecl { $$ = $1; }
-| FuncDecl  { $$ = $1; }
+  ClassDecl   { $$ = $1; }
+| FuncDecl    { $$ = $1; }
+| VarDecl ";" { $$ = $1; }
 ;
 
 FuncDecl:

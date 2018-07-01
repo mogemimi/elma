@@ -1157,9 +1157,9 @@ namespace elma {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 760,     ///< Last index in yytable_.
+      yylast_ = 775,     ///< Last index in yytable_.
       yynnts_ = 52,  ///< Number of nonterminal symbols.
-      yyfinal_ = 10, ///< Termination state number.
+      yyfinal_ = 15, ///< Termination state number.
       yyterror_ = 1,
       yyerrcode_ = 256,
       yyntokens_ = 63  ///< Number of tokens.

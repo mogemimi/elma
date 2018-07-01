@@ -103,6 +103,18 @@ TEST_CASE("parser can treat basic sources consistently", "[parser]")
         })";
         REQUIRE(parse(diag, source));
     }
+    SECTION("parser can treat variable declarations outside function body")
+    {
+        constexpr auto source = R"(
+            var a = 42;
+            var b: String = "hello";
+            let c = [];
+            let d: Map<String, Int?> = [:];
+            const e = true;
+            const f: Double = 3.14;
+        )";
+        REQUIRE(parse(diag, source));
+    }
 }
 
 TEST_CASE("parser can treat function declarations", "[parser]")
