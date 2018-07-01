@@ -17,7 +17,7 @@ std::string getErrorString(
 {
     std::stringstream ss;
     if (!programName.empty()) {
-        ss << programName;
+        ss << programName << ":";
     }
     ss << loc.toString() << ": ";
     ss << errorLevel + ": " << msg;
@@ -29,7 +29,7 @@ std::string getErrorString(
 {
     std::stringstream ss;
     if (!programName.empty()) {
-        ss << programName;
+        ss << programName << ": ";
     }
     ss << errorLevel + ": " << msg;
     return ss.str();
