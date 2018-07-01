@@ -117,7 +117,53 @@ void IdentifierResolver::visit(std::shared_ptr<IdentifierExpr> expr)
     decl->setEntity(entity);
 }
 
+void IdentifierResolver::visit(std::shared_ptr<TranslationUnitDecl> decl)
+{
+    // NOTE: To declare top-level identifiers regardless of the order of their declarations,
+    // the following uses breadth-first traversal.
+    for (auto& node : decl->getDeclarations()) {
+        switch (node->getKind()) {
+        case NodeKind::VarDecl: {
+            auto v = std::static_pointer_cast<VarDecl>(node);
+            defineDecl(v);
+            break;
+        }
+        case NodeKind::FuncDecl: {
+            auto v = std::static_pointer_cast<FuncDecl>(node);
+            defineDecl(v);
+            break;
+        }
+        case NodeKind::ClassDecl: {
+            auto v = std::static_pointer_cast<ClassDecl>(node);
+            defineDecl(v);
+            break;
+        }
+        default: break;
+        }
+    }
+
+    if (diag->hasError()) {
+        return;
+    }
+
+    // NOTE: Using depth-first traversal as usual.
+    ASTVisitor::visit(decl);
+}
+
 void IdentifierResolver::visit(std::shared_ptr<VarDecl> decl)
+{
+    // NOTE: To prevent misuse of the variable before its declaration, such as "let x = x;".
+    ASTVisitor::visit(decl);
+
+    auto ident = decl->getIdentifier();
+    assert(ident);
+
+    if (ident->getEntity() == nullptr) {
+        defineDecl(decl);
+    }
+}
+
+void IdentifierResolver::defineDecl(std::shared_ptr<VarDecl> decl)
 {
     auto scope = getCurrentScope();
     assert(scope);
@@ -142,15 +188,27 @@ void IdentifierResolver::visit(std::shared_ptr<VarDecl> decl)
         context->entities.push_back(entity);
     }
 
-    ASTVisitor::visit(decl);
-
-    assert(!scope->findAlt(ident->getName()));
-
-    // NOTE: To prevent misuse of the variable before its declaration, such as "let x = x;".
     scope->insert(entity);
 }
 
 void IdentifierResolver::visit(std::shared_ptr<FuncDecl> decl)
+{
+    if (auto ident = decl->getIdentifier(); ident->getEntity() == nullptr) {
+        defineDecl(decl);
+        if (diag->hasError()) {
+            return;
+        }
+    }
+
+    auto scope = std::make_shared<Scope>(getCurrentScope());
+    pushScope(scope);
+
+    ASTVisitor::visit(decl);
+
+    popScope();
+}
+
+void IdentifierResolver::defineDecl(std::shared_ptr<FuncDecl> decl)
 {
     if (auto ident = decl->getIdentifier()) {
         auto scope = getCurrentScope();
@@ -170,13 +228,6 @@ void IdentifierResolver::visit(std::shared_ptr<FuncDecl> decl)
             context->entities.push_back(entity);
         }
     }
-
-    auto scope = std::make_shared<Scope>(getCurrentScope());
-    pushScope(scope);
-
-    ASTVisitor::visit(decl);
-
-    popScope();
 }
 
 void IdentifierResolver::visit(std::shared_ptr<ParamDecl> decl)
@@ -214,6 +265,25 @@ void IdentifierResolver::visit(std::shared_ptr<ClassDecl> decl)
     assert(ident);
     assert(!ident->getName().empty());
 
+    if (ident->getEntity() == nullptr) {
+        defineDecl(decl);
+        if (diag->hasError()) {
+            return;
+        }
+    }
+
+    ASTVisitor::visit(decl);
+}
+
+void IdentifierResolver::defineDecl(std::shared_ptr<ClassDecl> decl)
+{
+    auto scope = getCurrentScope();
+    assert(scope);
+
+    auto ident = decl->getIdentifier();
+    assert(ident);
+    assert(!ident->getName().empty());
+
     auto alt = scope->findAlt(ident->getName());
     if (alt) {
         error(ident->getLocation(), "'" + ident->getName() + "' redeclared in this block.");
@@ -228,8 +298,6 @@ void IdentifierResolver::visit(std::shared_ptr<ClassDecl> decl)
     if (context) {
         context->entities.push_back(entity);
     }
-
-    ASTVisitor::visit(decl);
 }
 
 void IdentifierResolver::visit(std::shared_ptr<FuncLiteral> expr)

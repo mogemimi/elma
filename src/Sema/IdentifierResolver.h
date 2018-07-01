@@ -36,10 +36,15 @@ public:
     bool begin(std::shared_ptr<Node> node) override;
     void end(std::shared_ptr<Node> node) override;
 
+    void visit(std::shared_ptr<TranslationUnitDecl> decl) override;
     void visit(std::shared_ptr<VarDecl> decl) override;
     void visit(std::shared_ptr<FuncDecl> decl) override;
     void visit(std::shared_ptr<ParamDecl> decl) override;
     void visit(std::shared_ptr<ClassDecl> decl) override;
+
+    void defineDecl(std::shared_ptr<VarDecl> decl);
+    void defineDecl(std::shared_ptr<FuncDecl> decl);
+    void defineDecl(std::shared_ptr<ClassDecl> decl);
 
     void visit(std::shared_ptr<FuncLiteral> expr) override;
     void visit(std::shared_ptr<IdentifierExpr> expr) override;

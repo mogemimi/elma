@@ -30,12 +30,21 @@ TEST_CASE("IdentifierResolver can resolve identifier", "[identifier-resolve]")
     auto diag = std::make_shared<DiagnosticHandler>();
     diag->setStream(stream);
 
-    SECTION("redeclared in this block.")
+    SECTION("resolver emits an error when redeclaring variables inside function body")
     {
         constexpr auto source = R"(func f() {
             let x;
             let x;
         })";
+        REQUIRE(!resolveIdentifiers(diag, source));
+        REQUIRE(stream->hasError("error: 'x' redeclared in this block."));
+    }
+    SECTION("resolver emits an error when redeclaring variables outside function body")
+    {
+        constexpr auto source = R"(
+            let x;
+            let x;
+        )";
         REQUIRE(!resolveIdentifiers(diag, source));
         REQUIRE(stream->hasError("error: 'x' redeclared in this block."));
     }
@@ -238,5 +247,29 @@ TEST_CASE("IdentifierResolver can resolve identifier", "[identifier-resolve]")
         constexpr auto source = R"(func f(x, x) {})";
         REQUIRE(!resolveIdentifiers(diag, source));
         REQUIRE(stream->hasError("error: 'x' redeclared in this block."));
+    }
+    SECTION("function used before its declaration in function")
+    {
+        constexpr auto source = R"(
+        func f() { g(); }
+        func g() {}
+        )";
+        REQUIRE(resolveIdentifiers(diag, source));
+    }
+    SECTION("class used before its declaration in class")
+    {
+        constexpr auto source = R"(
+        class Foo { var bar : Bar; }
+        class Bar {}
+        )";
+        REQUIRE(resolveIdentifiers(diag, source));
+    }
+    SECTION("class used before its declaration in function")
+    {
+        constexpr auto source = R"(
+        func f() { var foo : Foo; }
+        class Foo {}
+        )";
+        REQUIRE(resolveIdentifiers(diag, source));
     }
 }
