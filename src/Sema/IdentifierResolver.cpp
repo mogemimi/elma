@@ -132,9 +132,9 @@ void IdentifierResolver::visit(std::shared_ptr<VarDecl> decl)
 
     auto entity = [&]() -> std::shared_ptr<Entity> {
         if (decl->getSpecifier() == VarDeclSpecifier::Const) {
-            return Entity::makeConstant(ident->getName(), ident);
+            return Entity::makeConstant(ident->getName(), decl);
         }
-        return Entity::makeVariable(ident->getName(), ident);
+        return Entity::makeVariable(ident->getName(), decl);
     }();
     ident->setEntity(entity);
 
@@ -162,7 +162,7 @@ void IdentifierResolver::visit(std::shared_ptr<FuncDecl> decl)
             return;
         }
 
-        auto entity = Entity::makeFunction(ident->getName(), ident);
+        auto entity = Entity::makeFunction(ident->getName(), decl);
         scope->insert(entity);
         ident->setEntity(entity);
 
@@ -194,7 +194,7 @@ void IdentifierResolver::visit(std::shared_ptr<ParamDecl> decl)
         return;
     }
 
-    auto entity = Entity::makeVariable(ident->getName(), ident);
+    auto entity = Entity::makeVariable(ident->getName(), decl);
     scope->insert(entity);
     ident->setEntity(entity);
 

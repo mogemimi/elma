@@ -16,7 +16,7 @@ enum class EntityKind {
 class Entity final {
 private:
     std::string name;
-    std::weak_ptr<Identifier> decl;
+    std::weak_ptr<Decl> decl;
     std::shared_ptr<Type> type;
     EntityKind kind;
 
@@ -25,20 +25,20 @@ public:
 
     std::string getName() const;
 
-    std::shared_ptr<Identifier> getDecl() const;
+    std::shared_ptr<Decl> getDecl() const;
 
     std::shared_ptr<Type> getType() const;
 
     void setType(const std::shared_ptr<Type>& type);
 
     static std::shared_ptr<Entity>
-    makeVariable(const std::string& name, const std::shared_ptr<Identifier>& decl);
+    makeVariable(const std::string& name, const std::shared_ptr<Decl>& decl);
 
     static std::shared_ptr<Entity>
-    makeConstant(const std::string& name, const std::shared_ptr<Identifier>& decl);
+    makeConstant(const std::string& name, const std::shared_ptr<Decl>& decl);
 
     static std::shared_ptr<Entity>
-    makeFunction(const std::string& name, const std::shared_ptr<Identifier>& decl);
+    makeFunction(const std::string& name, const std::shared_ptr<FuncDecl>& decl);
 
     static std::shared_ptr<Entity>
     makeType(const std::string& name, const std::shared_ptr<Type>& type);

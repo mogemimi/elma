@@ -1,4 +1,5 @@
 #include "Sema/Entity.h"
+#include "AST/Decl.h"
 #include <cassert>
 #include <utility>
 
@@ -14,7 +15,7 @@ std::string Entity::getName() const
     return name;
 }
 
-std::shared_ptr<Identifier> Entity::getDecl() const
+std::shared_ptr<Decl> Entity::getDecl() const
 {
     assert((kind == EntityKind::Var) || (kind == EntityKind::Const) || (kind == EntityKind::Func));
     return decl.lock();
@@ -31,7 +32,7 @@ void Entity::setType(const std::shared_ptr<Type>& t)
 }
 
 std::shared_ptr<Entity>
-Entity::makeVariable(const std::string& name, const std::shared_ptr<Identifier>& decl)
+Entity::makeVariable(const std::string& name, const std::shared_ptr<Decl>& decl)
 {
     auto entity = std::make_shared<Entity>();
     entity->kind = EntityKind::Var;
@@ -41,7 +42,7 @@ Entity::makeVariable(const std::string& name, const std::shared_ptr<Identifier>&
 }
 
 std::shared_ptr<Entity>
-Entity::makeConstant(const std::string& name, const std::shared_ptr<Identifier>& decl)
+Entity::makeConstant(const std::string& name, const std::shared_ptr<Decl>& decl)
 {
     auto entity = std::make_shared<Entity>();
     entity->kind = EntityKind::Const;
@@ -51,7 +52,7 @@ Entity::makeConstant(const std::string& name, const std::shared_ptr<Identifier>&
 }
 
 std::shared_ptr<Entity>
-Entity::makeFunction(const std::string& name, const std::shared_ptr<Identifier>& decl)
+Entity::makeFunction(const std::string& name, const std::shared_ptr<FuncDecl>& decl)
 {
     auto entity = std::make_shared<Entity>();
     entity->kind = EntityKind::Func;
