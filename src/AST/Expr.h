@@ -14,12 +14,21 @@ enum class ExprValueKind {
 };
 
 class Expr : public Node {
+protected:
+    std::shared_ptr<Type> type;
+
 public:
     virtual ~Expr() = default;
 
     virtual ExprValueKind getValueKind() const = 0;
 
     bool isLValue() const { return getValueKind() == ExprValueKind::LValue; }
+
+    // TODO: for constant folding
+    // bool isEvaluatable();
+
+    std::shared_ptr<Type> getType() const;
+    void setType(const std::shared_ptr<Type>& t);
 };
 
 class IntegerLiteral final
@@ -545,6 +554,10 @@ public:
     ExprValueKind getValueKind() const override;
 
     std::shared_ptr<Expr> getSubExpr() const { return subExpr; }
+};
+
+class OptionalEvaluation final {
+public:
 };
 
 } // namespace elma

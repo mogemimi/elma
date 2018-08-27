@@ -30,6 +30,7 @@ class FuncDecl;
 class ParamDecl;
 class ClassDecl;
 class NamedDecl;
+class ImportDecl;
 
 // NOTE: Expressions
 class Expr;
@@ -85,5 +86,13 @@ class Scope;
 
 // NOTE: Diagnostic
 class DiagnosticHandler;
+
+// NOTE: ADT (Abstract data types)
+class Value;
+class BoolValue;
+class DoubleValue;
+class Int64Value;
+class StringValue;
+class NullValue;
 
 } // namespace elma

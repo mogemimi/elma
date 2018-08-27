@@ -16,6 +16,10 @@ public:
 
 public:
     std::shared_ptr<TranslationUnitDecl> getTranslationUnitDecl() const;
+
+    void buildComments();
+
+    std::vector<std::shared_ptr<Comment>> findComments(const Position& begin, const Position& end);
 };
 
 } // namespace elma

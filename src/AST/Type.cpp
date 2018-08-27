@@ -101,6 +101,21 @@ TypeKind OptionalType::getKind() const
     return TypeKind::OptionalType;
 }
 
+TupleType::TupleType(std::initializer_list<std::shared_ptr<Type>> typesIn)
+    : types(typesIn)
+{
+}
+
+std::string TupleType::dump() const
+{
+    return "Tuple<" + stringify(types) + ">";
+}
+
+TypeKind TupleType::getKind() const
+{
+    return TypeKind::TupleType;
+}
+
 FunctionType::FunctionType(
     const std::shared_ptr<Type>& to, const std::vector<std::shared_ptr<Type>>& from)
     : returnType(to)
@@ -136,6 +151,60 @@ std::string ClassType::dump() const
 TypeKind ClassType::getKind() const
 {
     return TypeKind::ClassType;
+}
+
+TypeVariable::TypeVariable()
+{
+    static TypeID nextID = 100;
+    ++nextID;
+    this->id = nextID;
+}
+
+std::string TypeVariable::dump() const
+{
+    //    if (instance) {
+    //        return instance->dump();
+    //    }
+    return "<" + std::to_string(id) + ">";
+}
+
+TypeKind TypeVariable::getKind() const
+{
+    return TypeKind::TypeVariable;
+}
+
+TypeID TypeVariable::getTypeID() const
+{
+    return id;
+}
+
+std::shared_ptr<Type> TypeVariable::getType() const
+{
+    return instance;
+}
+
+void TypeVariable::setType(const std::shared_ptr<Type>& typeIn)
+{
+    assert(typeIn);
+    instance = typeIn;
+}
+
+ReturnType::ReturnType(
+    const std::shared_ptr<Type>& callableTypeIn,
+    const std::vector<std::shared_ptr<Type>>& argumentTypesIn)
+    : callableType(callableTypeIn)
+    , argumentTypes(argumentTypesIn)
+{
+}
+
+std::string ReturnType::dump() const
+{
+    return "((" + callableType->dump() + ")(" + stringify(argumentTypes) + "))";
+}
+
+TypeKind ReturnType::getKind() const
+{
+    return TypeKind::ReturnType;
 }
 
 } // namespace elma

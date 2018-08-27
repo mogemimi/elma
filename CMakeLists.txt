@@ -41,6 +41,15 @@ add_library(elma STATIC
     src/Basic/Location.h
     src/Basic/StringHelper.cpp
     src/Basic/StringHelper.h
+    # src/CodeGen/BytecodeGenerator.cpp
+    # src/CodeGen/BytecodeGenerator.h
+    src/CodeGen/Instruction.cpp
+    src/CodeGen/Instruction.h
+    src/CodeGen/Opcode.h
+    # src/CodeGen/Runtime.cpp
+    # src/CodeGen/Runtime.h
+    src/CodeGen/Transpiler.cpp
+    src/CodeGen/Transpiler.h
     src/Driver/Driver.cpp
     src/Driver/Driver.h
     src/Parser/Lexer.cpp
@@ -53,12 +62,30 @@ add_library(elma STATIC
     src/Printer/ASTFormatter.h
     src/Printer/PrettyPrinter.cpp
     src/Printer/PrettyPrinter.h
+    # src/Sema/ASTEvaluator.cpp
+    # src/Sema/ASTEvaluator.h
     src/Sema/Entity.cpp
     src/Sema/Entity.h
     src/Sema/IdentifierResolver.cpp
     src/Sema/IdentifierResolver.h
+    src/Sema/InfiniteRecursion.cpp
+    src/Sema/InfiniteRecursion.h
+    # src/Sema/Optimizier.cpp
+    # src/Sema/Optimizier.h
     src/Sema/Scope.cpp
     src/Sema/Scope.h
+    src/Sema/SemaChecker.cpp
+    src/Sema/SemaChecker.h
+    src/Sema/TypeHelper.cpp
+    src/Sema/TypeHelper.h
+    src/Sema/TypeInferer.cpp
+    src/Sema/TypeInferer.h
+    src/Sema/TypeReprResolver.cpp
+    src/Sema/TypeReprResolver.h
+    src/Sema/TypeResolver.cpp
+    src/Sema/TypeResolver.h
+    src/Sema/Value.cpp
+    src/Sema/Value.h
     thirdparty/duktape/duktape.c
 )
 
@@ -81,6 +108,31 @@ target_compile_options(elma PRIVATE
     >
 )
 
+add_executable(elmac
+    tools/driver/main.cpp
+)
+
+target_link_libraries(elmac elma)
+
+target_include_directories(elmac PRIVATE
+    src
+)
+
+target_compile_options(elmac PRIVATE
+    $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>:
+        -Weffc++
+        -Wextra
+        -Wnon-virtual-dtor
+        -Wuninitialized
+        -Wunreachable-code
+        -Wshadow
+        -Wno-unused-parameter
+        -Wno-unused-variable
+        $<$<CONFIG:DEBUG>:-g;-O0>
+        $<$<CONFIG:RELEASE>:-O3>
+    >
+)
+
 add_executable(unittest
     test/CommentTest.cpp
     test/ASTDumperTest.cpp
@@ -89,6 +141,9 @@ add_executable(unittest
     test/main.cpp
     test/ParserTest.cpp
     test/PrettyPrinterTest.cpp
+    test/SemaCheckerTest.cpp
+    test/TranspilerTest.cpp
+    test/TypeResolverTest.cpp
 )
 
 target_link_libraries(unittest elma)

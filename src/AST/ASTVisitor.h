@@ -64,5 +64,9 @@ namespace AST {
 
 void walk(ASTVisitor* visitor, std::shared_ptr<Node> node);
 
+using TraverserFunc = std::function<bool(std::shared_ptr<Node>)>;
+
+void traverse(const std::shared_ptr<Node>& node, TraverserFunc before, TraverserFunc after);
+
 } // namespace AST
 } // namespace elma

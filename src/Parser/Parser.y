@@ -107,6 +107,8 @@ elma::Parser::symbol_type yylex(elma::Driver& driver);
 %token IN                   "in"
 %token DEFER                "defer"
 %token CLASS                "class"
+%token IMPORT               "import"
+%token FROM                 "from"
 %token NULL                 "null"
 
 %token <std::shared_ptr<Identifier>>                IDENTIFIER "identifier"
@@ -138,6 +140,8 @@ elma::Parser::symbol_type yylex(elma::Driver& driver);
 %type  <CallSignature>                              CallSignature
 %type  <std::vector<std::shared_ptr<ParamDecl>>>    ParamDeclList
 %type  <std::shared_ptr<ParamDecl>>                 ParamDecl
+%type  <std::vector<std::shared_ptr<ImportDecl>>>   ImportDeclList
+%type  <std::shared_ptr<ImportDecl>>                ImportDecl
 
 %type  <std::shared_ptr<Expr>>                      Expression
 %type  <std::vector<std::shared_ptr<Expr>>>         ExpressionList
@@ -193,8 +197,18 @@ elma::Parser::symbol_type yylex(elma::Driver& driver);
 %start TranslationUnitDecl;
 
 TranslationUnitDecl:
-  %empty                  { driver.ast.translationUnit = std::make_shared<TranslationUnitDecl>(@$, std::vector<std::shared_ptr<Decl>>{}); }
-| TopLevelDeclarationList { driver.ast.translationUnit = std::make_shared<TranslationUnitDecl>(@$, $1); }
+  %empty                                  { driver.ast.translationUnit = std::make_shared<TranslationUnitDecl>(@$, std::vector<std::shared_ptr<Decl>>{}); }
+| TopLevelDeclarationList                 { driver.ast.translationUnit = std::make_shared<TranslationUnitDecl>(@$, $1); }
+| ImportDeclList TopLevelDeclarationList  { driver.ast.translationUnit = std::make_shared<TranslationUnitDecl>(@$, $2); }
+;
+
+ImportDecl:
+  "import" "identifier" "from" "string_literal" { }
+;
+
+ImportDeclList:
+  ImportDecl                { }
+| ImportDeclList ImportDecl { }
 ;
 
 TopLevelDeclarationList:

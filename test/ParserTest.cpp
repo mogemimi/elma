@@ -115,6 +115,31 @@ TEST_CASE("parser can treat basic sources consistently", "[parser]")
         )";
         REQUIRE(parse(diag, source));
     }
+    SECTION("parser can treat import declaration")
+    {
+        constexpr auto source = R"(
+        import foo from "./foo.elma"
+        func main() {
+            foo.run();
+        }
+        )";
+        REQUIRE(parse(diag, source));
+    }
+    SECTION("translation unit must have any declarations except import")
+    {
+        constexpr auto source = R"(
+        import foo from "./foo.elma"
+        )";
+        REQUIRE(!parse(diag, source));
+    }
+    SECTION("import must be declared before other declarations")
+    {
+        constexpr auto source = R"(
+        func main() {}
+        import foo from "./foo.elma"
+        )";
+        REQUIRE(!parse(diag, source));
+    }
 }
 
 TEST_CASE("parser can treat function declarations", "[parser]")

@@ -131,6 +131,7 @@ private:
     std::vector<std::shared_ptr<ParamDecl>> parameters;
     std::shared_ptr<TypeRepr> returnType;
     std::shared_ptr<CompoundStmt> compoundStmt;
+    std::shared_ptr<Type> funcType;
 
 public:
     FuncDecl(
@@ -151,6 +152,10 @@ public:
     std::shared_ptr<TypeRepr> getReturnType() const;
 
     std::shared_ptr<CompoundStmt> getBody() const;
+
+    std::shared_ptr<Type> getType() const { return funcType; }
+
+    void setType(const std::shared_ptr<Type>& t) { funcType = t; }
 };
 
 class ParamDecl final
@@ -160,6 +165,7 @@ private:
     Location location;
     std::shared_ptr<Identifier> ident;
     std::shared_ptr<TypeRepr> typeAnnotation;
+    std::shared_ptr<Type> type;
 
 public:
     ParamDecl(const Location& loc, const std::shared_ptr<Identifier>& name);
@@ -175,6 +181,10 @@ public:
 
     std::shared_ptr<Identifier> getIdentifier() const { return ident; }
     std::shared_ptr<TypeRepr> getTypeAnnotation() const { return typeAnnotation; }
+
+    std::shared_ptr<Type> getType() const { return type; }
+
+    void setType(const std::shared_ptr<Type>& t) { type = t; }
 };
 
 class ClassDecl final

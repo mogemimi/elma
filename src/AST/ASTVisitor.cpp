@@ -20,6 +20,24 @@ template <typename T> void walkChildren(ASTVisitor* visitor, const std::vector<T
     }
 }
 
+class Inspector final : public ASTVisitor {
+public:
+    TraverserFunc before;
+    TraverserFunc after;
+
+    bool begin(std::shared_ptr<Node> node) override
+    {
+        assert(before);
+        return before(node);
+    }
+
+    void end(std::shared_ptr<Node> node) override
+    {
+        assert(after);
+        after(node);
+    }
+};
+
 } // end of anonymous namespace
 
 void walk(ASTVisitor* visitor, std::shared_ptr<Node> node)
@@ -202,6 +220,17 @@ void walk(ASTVisitor* visitor, std::shared_ptr<Node> node)
     }
 
     visitor->end(node);
+}
+
+void traverse(const std::shared_ptr<Node>& node, TraverserFunc before, TraverserFunc after)
+{
+    assert(before);
+    assert(after);
+    assert(node);
+    Inspector inspector;
+    inspector.before = before;
+    inspector.after = after;
+    walk(&inspector, node);
 }
 
 } // namespace AST

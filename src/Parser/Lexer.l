@@ -159,6 +159,8 @@ crlf        (\r\n|\n)
 "in"        return Parser::make_IN(loc);
 "defer"     return Parser::make_DEFER(loc);
 "class"     return Parser::make_CLASS(loc);
+"import"    return Parser::make_IMPORT(loc);
+"from"      return Parser::make_FROM(loc);
 "true"      return Parser::make_BOOL_LITERAL(std::make_shared<BoolLiteral>(loc, true), loc);
 "false"     return Parser::make_BOOL_LITERAL(std::make_shared<BoolLiteral>(loc, false), loc);
 "null"      return Parser::make_NULL(loc);

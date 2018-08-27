@@ -4,6 +4,17 @@
 
 namespace elma {
 
+std::shared_ptr<Type> Expr::getType() const
+{
+    return type;
+}
+
+void Expr::setType(const std::shared_ptr<Type>& t)
+{
+    assert(t);
+    type = t;
+}
+
 IntegerLiteral::IntegerLiteral(const Location& loc, int64_t v)
     : location(loc)
     , value(v)
