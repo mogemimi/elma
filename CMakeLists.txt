@@ -5,26 +5,6 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-if ((CMAKE_CXX_COMPILER_ID MATCHES "Clang") OR (CMAKE_CXX_COMPILER_ID MATCHES "GNU"))
-    add_compile_options(
-        -Weffc++
-        -Wextra
-        -Wnon-virtual-dtor
-        -Wuninitialized
-        -Wunreachable-code
-        -Wshadow
-
-        -Wno-unused-parameter
-        -Wno-unused-variable
-    )
-endif()
-
-include_directories(
-    src
-    thirdparty/catch2
-    thirdparty
-)
-
 source_group(AST REGULAR_EXPRESSION src/AST/*)
 source_group(Basic REGULAR_EXPRESSION src/Basic/*)
 source_group(CodeGen REGULAR_EXPRESSION src/CodeGen/*)
@@ -82,6 +62,25 @@ add_library(elma STATIC
     thirdparty/duktape/duktape.c
 )
 
+target_include_directories(elma PRIVATE
+    src
+)
+
+target_compile_options(elma PRIVATE
+    $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>:
+        -Weffc++
+        -Wextra
+        -Wnon-virtual-dtor
+        -Wuninitialized
+        -Wunreachable-code
+        -Wshadow
+        -Wno-unused-parameter
+        -Wno-unused-variable
+        $<$<CONFIG:DEBUG>:-g;-O0>
+        $<$<CONFIG:RELEASE>:-O3>
+    >
+)
+
 add_executable(unittest
     test/CommentTest.cpp
     test/ASTDumperTest.cpp
@@ -93,3 +92,24 @@ add_executable(unittest
 )
 
 target_link_libraries(unittest elma)
+
+target_include_directories(unittest PRIVATE
+    src
+    thirdparty/catch2
+    thirdparty
+)
+
+target_compile_options(unittest PRIVATE
+    $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>:
+        -Weffc++
+        -Wextra
+        -Wnon-virtual-dtor
+        -Wuninitialized
+        -Wunreachable-code
+        -Wshadow
+        -Wno-unused-parameter
+        -Wno-unused-variable
+        $<$<CONFIG:DEBUG>:-g;-O0>
+        $<$<CONFIG:RELEASE>:-O3>
+    >
+)
